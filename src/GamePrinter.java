@@ -13,7 +13,7 @@ public class GamePrinter {
             {"-", "-", "-", "-", "-"},
             {" ", "|", " ", "|", " "}
     };
-    String[][] filledLayout = {
+    static String[][] filledLayout = {
             {"1", "|", "2", "|", "3"},
             {"-", "-", "-", "-", "-"},
             {"4", "|", "5", "|", "6"},
@@ -39,6 +39,13 @@ public class GamePrinter {
         for (int i = 0; i < GamePrinter.layout.length; ++i) {
             for (int j = 0; j < GamePrinter.layout[i].length; ++j) {
                 System.out.print(GamePrinter.layout[i][j]);
+            }
+            System.out.print("\n");
+        }
+        System.out.println("Tak są oznaczone pola na których można postawić kółko lub krzyżyk:");
+        for (int i = 0; i < GamePrinter.filledLayout.length; ++i) {
+            for (int j = 0; j < GamePrinter.filledLayout[i].length; ++j) {
+                System.out.print(GamePrinter.filledLayout[i][j]);
             }
             System.out.print("\n");
         }
