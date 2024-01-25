@@ -3,13 +3,7 @@ public class Main {
         GamePrinter game = new GamePrinter();
         game.setLanguage();
         game.printTutorial();
-
-        PlayerDataHandler player1 = new PlayerDataHandler();
-        PlayerDataHandler player2 = new PlayerDataHandler();
-
-        player1.grabPlayerName(1);
-        player2.grabPlayerName(2);
-
-        game.startGame(player1.name, player1.score, player2.name, player2.score);
+        game.grabData();
+        game.startGame();
     }
 }

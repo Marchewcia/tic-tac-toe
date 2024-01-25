@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class GamePrinter {
     static String language;
-    static String[][] layout = {
+    final static String[][] layout = {
             {" ", "|", " ", "|", " "},
             {"-", "-", "-", "-", "-"},
             {" ", "|", " ", "|", " "},
@@ -21,24 +21,49 @@ public class GamePrinter {
             {"-", "-", "-", "-", "-"},
             {"7", "|", "8", "|", "9"}
     };
-    String[][] currentLayout;
+    String[][] currentLayout = {
+            {" ", "|", " ", "|", " "},
+            {"-", "-", "-", "-", "-"},
+            {" ", "|", " ", "|", " "},
+            {"-", "-", "-", "-", "-"},
+            {" ", "|", " ", "|", " "}
+    };
     static int inputInt;
     static int currentTurn = 1;
     static String currentCharacter = "X";
-
+    static boolean firstTime = true;
     static boolean gameWon = false;
 
-    public void startGame(String name1, int score1, String name2, int score2) {
-        this.currentLayout = layout;
+    PlayerDataHandler player1 = new PlayerDataHandler();
+    PlayerDataHandler player2 = new PlayerDataHandler();
+
+    public void grabData(){
+        this.player1.grabPlayerName(1);
+        this.player2.grabPlayerName(2);
+    }
+    public void startGame() {
+        if (firstTime == true){
+            for (int i = 0; i < layout.length; ++i) {
+                for (int j = 0; j < layout[i].length; ++j) {
+                    this.currentLayout[i][j] = layout[i][j];
+                }
+            }
+            currentTurn = 1;
+            firstTime = false ;
+        }
         while(gameWon == false){
+            for (int i = 0; i < this.currentLayout.length; ++i) {
+                for (int j = 0; j < this.currentLayout[i].length; ++j) {
+                    System.out.print(this.currentLayout[i][j]);
+                }
+                System.out.print("\n");
+            }
             switch(currentTurn){
                 case 1:
-                    currentTurn = 2;
-                    System.out.println("Ruch gracza " + name1);
+                    System.out.println("Ruch gracza " + this.player1.name);
                     break;
                 case 2:
-                    currentTurn = 1;
-                    System.out.println("Ruch gracza " + name2);
+                    System.out.println("Ruch gracza " + this.player2.name);
                     break;
             }
             try{
@@ -46,25 +71,46 @@ public class GamePrinter {
                 inputInt = Integer.parseInt(input.nextLine());
                 if (inputInt > 9 || inputInt < 1){
                     System.out.println("Zbyt duża lub zbyt mała liczba, spróbuj ponownie.");
-                    this.startGame(name1, score1, name2, score2);
+                    this.startGame();
                 }
-                inputHandler(name1, score1, name2, score2);
+                inputHandler();
             }
             catch(NumberFormatException e){
                 System.out.println("Niepoprawny znak, spróbuj ponownie.");
-                this.startGame(name1, score1, name2, score2);
+                this.startGame();
             }
-            for (int i=0; i<6; i+=2){
+            for (int i = 0; i < 6; i += 2){
                 if ((this.currentLayout[i][0] == this.currentLayout[i][2] && this.currentLayout[i][0] == this.currentLayout[i][4]) && (this.currentLayout[i][0] != " " && this.currentLayout[i][2] != " " && this.currentLayout[i][4] != " ")) {
                     gameWon = true;
-                    break;
                 }
             }
-
+            for (int i = 0; i < 6; i += 2){
+                if((this.currentLayout[0][i] == this.currentLayout[2][i] && this.currentLayout[0][i] == this.currentLayout[4][i]) && (this.currentLayout[0][i] != " " && this.currentLayout[2][i] != " " && this.currentLayout[4][i] != " ")){
+                    gameWon = true;
+                }
+            }
+            if((this.currentLayout[0][0] == this.currentLayout[2][2] && this.currentLayout[0][0] == this.currentLayout[4][4]) && (this.currentLayout[0][0] != " " && this.currentLayout[2][2] != " " && this.currentLayout[4][4] != " ")){
+                gameWon = true;
+            }
+            if((this.currentLayout[0][4] == this.currentLayout[2][2] && this.currentLayout[0][4] == this.currentLayout[4][0]) && (this.currentLayout[0][4] != " " && this.currentLayout[2][2] != " " && this.currentLayout[4][0] != " ")){
+                gameWon = true;
+            }
         }
+        if (currentTurn == 1){
+            System.out.println("Gracz " + this.player1.name + " wygrał/a.");
+            this.player1.score += 1;
+        }
+        else if (currentTurn == 2){
+            System.out.println("Gracz " + this.player2.name + " wygrał/a.");
+            this.player2.score += 1;
+        }
+        System.out.println("Wynik graczy:\n" + this.player1.name + ": " + this.player1.score + "\n" + this.player2.name + ": " + this.player2.score);
+        gameWon = false ;
+        firstTime = true ;
+        this.startGame();
     }
 
-    public void inputHandler(String name1, int score1, String name2, int score2){
+    public void inputHandler(){
         if(currentTurn == 1){
             currentCharacter = "X";
         }
@@ -75,66 +121,72 @@ public class GamePrinter {
             case 1:
                 if (this.currentLayout[0][0] == "O" || this.currentLayout[0][0] == "X"){
                     System.out.println("To pole jest już zajęte");
-                    this.startGame(name1, score1, name2, score2);
+                    this.startGame();
                 }
                 this.currentLayout[0][0] = currentCharacter ;
                 break;
             case 2:
                 if (this.currentLayout[0][2] == "O" || this.currentLayout[0][2] == "X"){
                     System.out.println("To pole jest już zajęte");
-                    this.startGame(name1, score1, name2, score2);
+                    this.startGame();
                 }
                 this.currentLayout[0][2] = currentCharacter ;
                 break;
             case 3:
                 if (this.currentLayout[0][4] == "O" || this.currentLayout[0][4] == "X"){
                     System.out.println("To pole jest już zajęte");
-                    this.startGame(name1, score1, name2, score2);
+                    this.startGame();
                 }
                 this.currentLayout[0][4] = currentCharacter ;
                 break;
             case 4:
                 if (this.currentLayout[2][0] == "O" || this.currentLayout[2][0] == "X"){
                     System.out.println("To pole jest już zajęte");
-                    this.startGame(name1, score1, name2, score2);
+                    this.startGame();
                 }
                 this.currentLayout[2][0] = currentCharacter ;
                 break;
             case 5:
                 if (this.currentLayout[2][2] == "O" || this.currentLayout[2][2] == "X"){
                     System.out.println("To pole jest już zajęte");
-                    this.startGame(name1, score1, name2, score2);
+                    this.startGame();
                 }
                 this.currentLayout[2][2] = currentCharacter ;
                 break;
             case 6:
                 if (this.currentLayout[2][4] == "O" || this.currentLayout[2][4] == "X"){
                     System.out.println("To pole jest już zajęte");
-                    this.startGame(name1, score1, name2, score2);
+                    this.startGame();
                 }
                 this.currentLayout[2][4] = currentCharacter ;
                 break;
             case 7:
                 if (this.currentLayout[4][0] == "O" || this.currentLayout[4][0] == "X"){
                     System.out.println("To pole jest już zajęte");
-                    this.startGame(name1, score1, name2, score2);
+                    this.startGame();
                 }
                 this.currentLayout[4][0] = currentCharacter ;
                 break;
             case 8:
                 if (this.currentLayout[4][2] == "O" || this.currentLayout[4][2] == "X"){
                     System.out.println("To pole jest już zajęte");
-                    this.startGame(name1, score1, name2, score2);
+                    this.startGame();
                 }
                 this.currentLayout[4][2] = currentCharacter ;
                 break;
             case 9:
                 if (this.currentLayout[4][4] == "O" || this.currentLayout[4][4] == "X"){
                     System.out.println("To pole jest już zajęte");
-                    this.startGame(name1, score1, name2, score2);
+                    this.startGame();
                 }
                 this.currentLayout[4][4] = currentCharacter ;
                 break;
+        }
+        if (currentTurn == 1){
+            currentTurn = 2;
+        }
+        else if (currentTurn == 2){
+            currentTurn = 1;
         }
     }
 
