@@ -109,11 +109,11 @@ public class GamePrinter {
         }
         System.out.print("\n");
         if (currentTurn == 2){
-            System.out.println(this.player1.name);
+            System.out.print("\n" + this.player1.name);
             this.player1.score += 1;
         }
         else if (currentTurn == 1){
-            System.out.println(this.player2.name);
+            System.out.print("\n" + this.player2.name);
             this.player2.score += 1;
         }
         printCorrectLanguage("Won", true);
