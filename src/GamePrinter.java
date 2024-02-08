@@ -1,5 +1,3 @@
-import static java.lang.Thread.currentThread;
-import static java.lang.Thread.sleep;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Objects;
