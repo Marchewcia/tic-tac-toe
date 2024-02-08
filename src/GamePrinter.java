@@ -43,11 +43,7 @@ public class GamePrinter {
     public void startGame() {
         if (firstTime){
             System.out.print("\n");
-            for (int i = 0; i < layout.length; ++i) {
-                for (int j = 0; j < layout[i].length; ++j) {
-                    this.currentLayout[i][j] = layout[i][j];
-                }
-            }
+            System.arraycopy(layout, 0, this.currentLayout, 0, layout.length);
             currentTurn = 1;
             firstTime = false ;
         }
