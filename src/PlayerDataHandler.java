@@ -5,8 +5,26 @@ public class PlayerDataHandler {
     String name;
     public void grabPlayerName(int player){
         Scanner input = new Scanner(System.in);
-        System.out.println("Podaj nazwę " + player + " gracza.");
+        System.out.print("\n");
+        switch(player){
+            case 1:
+                GamePrinter.printCorrectLanguage("Player1", true);
+                break;
+            case 2:
+                GamePrinter.printCorrectLanguage("Player2", true);
+                break;
+        }
         this.name = input.nextLine();
-        System.out.println("Nazwa " + player + " gracza: " + this.name + ". Ten gracz będzie grał jako X/O\n");
+        GamePrinter.printCorrectLanguage("Name", false);
+        System.out.print(player + ":" + this.name + "\n");
+        GamePrinter.printCorrectLanguage("XO", false);
+        switch(player){
+            case 1:
+                System.out.print("X\n");
+                break;
+            case 2:
+                System.out.print("O\n");
+                break;
+        }
     }
 }

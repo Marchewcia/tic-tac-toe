@@ -1,0 +1,1 @@
+Czy chcesz zagrać ponownie? napisz T aby kontynuować, inny klawisz spowoduje zakończenie programu. Potwierdź klawiszem enter.

@@ -1,0 +1,2 @@
+Guide for the game tic tac toe.
+This is how empty board look like:

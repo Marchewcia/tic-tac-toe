@@ -2,6 +2,7 @@ import static java.lang.Thread.currentThread;
 import static java.lang.Thread.sleep;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Objects;
 import java.util.Scanner;
 
 
@@ -42,7 +43,8 @@ public class GamePrinter {
         this.player2.grabPlayerName(2);
     }
     public void startGame() {
-        if (firstTime == true){
+        if (firstTime){
+            System.out.print("\n");
             for (int i = 0; i < layout.length; ++i) {
                 for (int j = 0; j < layout[i].length; ++j) {
                     this.currentLayout[i][j] = layout[i][j];
@@ -51,7 +53,7 @@ public class GamePrinter {
             currentTurn = 1;
             firstTime = false ;
         }
-        while(gameWon == false){
+        while(!gameWon){
             for (int i = 0; i < this.currentLayout.length; ++i) {
                 for (int j = 0; j < this.currentLayout[i].length; ++j) {
                     System.out.print(this.currentLayout[i][j]);
@@ -60,23 +62,27 @@ public class GamePrinter {
             }
             switch(currentTurn){
                 case 1:
-                    System.out.println("Ruch gracza " + this.player1.name);
+                    printCorrectLanguage("round", false);
+                    System.out.print(this.player1.name + "\n");
                     break;
                 case 2:
-                    System.out.println("Ruch gracza " + this.player2.name);
+                    printCorrectLanguage("round", false);
+                    System.out.print(this.player2.name + "\n");
                     break;
             }
             try{
                 Scanner input = new Scanner(System.in);
                 inputInt = Integer.parseInt(input.nextLine());
                 if (inputInt > 9 || inputInt < 1){
-                    System.out.println("Zbyt duża lub zbyt mała liczba, spróbuj ponownie.");
+                    printCorrectLanguage("tooManyOrTooLittleNumber", false);
+                    System.out.print("\n");
                     this.startGame();
                 }
                 inputHandler();
             }
             catch(NumberFormatException e){
-                System.out.println("Niepoprawny znak, spróbuj ponownie.");
+                printCorrectLanguage("incorrectKey", false);
+                System.out.print("\n");
                 this.startGame();
             }
             for (int i = 0; i < 6; i += 2){
@@ -95,19 +101,35 @@ public class GamePrinter {
             if((this.currentLayout[0][4] == this.currentLayout[2][2] && this.currentLayout[0][4] == this.currentLayout[4][0]) && (this.currentLayout[0][4] != " " && this.currentLayout[2][2] != " " && this.currentLayout[4][0] != " ")){
                 gameWon = true;
             }
+            if(this.currentLayout[0][0] != " " && this.currentLayout[0][2] != " " && this.currentLayout[0][4] != " " && this.currentLayout[2][0] != " " && this.currentLayout[2][2] != " " && this.currentLayout[2][4] != " " && this.currentLayout[4][0] != " " && this.currentLayout[4][2] != " " && this.currentLayout[4][4] != " " && this.currentLayout[0][4] != " "){
+                System.out.println("Remis");
+                firstTime = true ;
+                this.startGame();
+            }
         }
-        if (currentTurn == 1){
-            System.out.println("Gracz " + this.player1.name + " wygrał/a.");
+        System.out.print("\n");
+        if (currentTurn == 2){
+            System.out.println(this.player1.name);
             this.player1.score += 1;
         }
-        else if (currentTurn == 2){
-            System.out.println("Gracz " + this.player2.name + " wygrał/a.");
+        else if (currentTurn == 1){
+            System.out.println(this.player2.name);
             this.player2.score += 1;
         }
-        System.out.println("Wynik graczy:\n" + this.player1.name + ": " + this.player1.score + "\n" + this.player2.name + ": " + this.player2.score);
+        printCorrectLanguage("Won", true);
+        System.out.print(this.player1.name + ": " + this.player1.score + "\n" + this.player2.name + ": " + this.player2.score + "\n");
         gameWon = false ;
         firstTime = true ;
-        this.startGame();
+        printCorrectLanguage("Next", true);
+        gameContinue();
+    }
+
+    private void gameContinue(){
+        Scanner input = new Scanner(System.in);
+        String input1 = input.nextLine();
+        if (Objects.equals(input1, "T")){
+            this.startGame();
+        }
     }
 
     public void inputHandler(){
@@ -119,64 +141,64 @@ public class GamePrinter {
         }
         switch (inputInt){
             case 1:
-                if (this.currentLayout[0][0] == "O" || this.currentLayout[0][0] == "X"){
-                    System.out.println("To pole jest już zajęte");
+                if (this.currentLayout[0][0] != " "){
+                    printCorrectLanguage("Taken", false);
                     this.startGame();
                 }
                 this.currentLayout[0][0] = currentCharacter ;
                 break;
             case 2:
-                if (this.currentLayout[0][2] == "O" || this.currentLayout[0][2] == "X"){
-                    System.out.println("To pole jest już zajęte");
+                if (this.currentLayout[0][2] != " "){
+                    printCorrectLanguage("Taken", false);
                     this.startGame();
                 }
                 this.currentLayout[0][2] = currentCharacter ;
                 break;
             case 3:
-                if (this.currentLayout[0][4] == "O" || this.currentLayout[0][4] == "X"){
-                    System.out.println("To pole jest już zajęte");
+                if (this.currentLayout[0][4] != " "){
+                    printCorrectLanguage("Taken", false);
                     this.startGame();
                 }
                 this.currentLayout[0][4] = currentCharacter ;
                 break;
             case 4:
-                if (this.currentLayout[2][0] == "O" || this.currentLayout[2][0] == "X"){
-                    System.out.println("To pole jest już zajęte");
+                if (this.currentLayout[2][0] != " "){
+                    printCorrectLanguage("Taken", false);
                     this.startGame();
                 }
                 this.currentLayout[2][0] = currentCharacter ;
                 break;
             case 5:
-                if (this.currentLayout[2][2] == "O" || this.currentLayout[2][2] == "X"){
-                    System.out.println("To pole jest już zajęte");
+                if (this.currentLayout[2][2] != " "){
+                    printCorrectLanguage("Taken", false);
                     this.startGame();
                 }
                 this.currentLayout[2][2] = currentCharacter ;
                 break;
             case 6:
-                if (this.currentLayout[2][4] == "O" || this.currentLayout[2][4] == "X"){
-                    System.out.println("To pole jest już zajęte");
+                if (this.currentLayout[2][4] != " "){
+                    printCorrectLanguage("Taken", false);
                     this.startGame();
                 }
                 this.currentLayout[2][4] = currentCharacter ;
                 break;
             case 7:
-                if (this.currentLayout[4][0] == "O" || this.currentLayout[4][0] == "X"){
-                    System.out.println("To pole jest już zajęte");
+                if (this.currentLayout[4][0] != " "){
+                    printCorrectLanguage("Taken", false);
                     this.startGame();
                 }
                 this.currentLayout[4][0] = currentCharacter ;
                 break;
             case 8:
-                if (this.currentLayout[4][2] == "O" || this.currentLayout[4][2] == "X"){
-                    System.out.println("To pole jest już zajęte");
+                if (this.currentLayout[4][2] != " "){
+                    printCorrectLanguage("Taken", false);
                     this.startGame();
                 }
                 this.currentLayout[4][2] = currentCharacter ;
                 break;
             case 9:
-                if (this.currentLayout[4][4] == "O" || this.currentLayout[4][4] == "X"){
-                    System.out.println("To pole jest już zajęte");
+                if (this.currentLayout[4][4] != " "){
+                    printCorrectLanguage("Taken", false);
                     this.startGame();
                 }
                 this.currentLayout[4][4] = currentCharacter ;
@@ -191,40 +213,60 @@ public class GamePrinter {
     }
 
     public void setLanguage() {
-        System.out.println("Choose your language: Polish or English. \nWybierz swój język: Polish (polski) czy English (angielski).\nPlease type exactly how it is written in this instruction. \nProszę aby wpisać dokładnie jak w tej instrukcji.");
-        Scanner input = new Scanner(System.in);
-        GamePrinter.language = input.nextLine();
-        System.out.print("\n");
+        System.out.println("Choose your language/Wybierz swój język:\n1. Polish/Polski\n2. English/Angielski");
+        try{
+            Scanner input = new Scanner(System.in);
+            int lang = Integer.parseInt(input.nextLine());
+            if (lang == 1){
+                System.out.println("Wybrałeś/aś język polski.\n");
+                GamePrinter.language = "Polish";
+            }
+            else if (lang == 2){
+                System.out.println("You've chosen english language\n");
+                GamePrinter.language = "English";
+            }
+            else{
+                System.out.println("Invalid character\n");
+                this.setLanguage();
+            }
+        }
+        catch(NumberFormatException e){
+            System.out.println("Invalid character\n");
+            this.setLanguage();
+        }
     }
 
     public void printTutorial() {
-        System.out.println("Tutorial do gry w kółko i krzyżyk \nTak wygląda pusta plansza:\n");
+        printCorrectLanguage("tutorialOne", true);
         for (int i = 0; i < GamePrinter.layout.length; ++i) {
             for (int j = 0; j < GamePrinter.layout[i].length; ++j) {
                 System.out.print(GamePrinter.layout[i][j]);
             }
             System.out.print("\n");
         }
-        System.out.println("\nTak są oznaczone pola na których można postawić kółko lub krzyżyk:\n");
+        printCorrectLanguage("tutorialTwo", true);
         for (int i = 0; i < GamePrinter.filledLayout.length; ++i) {
             for (int j = 0; j < GamePrinter.filledLayout[i].length; ++j) {
                 System.out.print(GamePrinter.filledLayout[i][j]);
             }
             System.out.print("\n");
         }
-        System.out.print("\n");
     }
 
-    private void printCorrectLanguage(String name) {
+    public static void printCorrectLanguage(String name, boolean line) {
         try {
-            File file = new File(name + "_" + GamePrinter.language + ".txt");
+            String path = System.getProperty("user.dir");
+            File file = new File(path + "\\src\\txt\\" + name + "_" + GamePrinter.language + ".txt");
             Scanner reading = new Scanner(file);
             while (reading.hasNextLine()) {
-                System.out.println(reading.nextLine());
+                System.out.print(reading.nextLine());
+                if (line) {
+                    System.out.print("\n");
+                }
             }
             reading.close();
         } catch (FileNotFoundException e) {
-            System.out.println("file_error");
+            System.out.println("file_error\n" + e);
         }
     }
 }
