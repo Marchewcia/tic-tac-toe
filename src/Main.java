@@ -1,9 +1,8 @@
 public class Main {
     public static void main(String[] args) {
-        GamePrinter game = new GamePrinter();
-        game.setLanguage();
-        game.printTutorial();
-        game.grabData();
-        game.startGame();
+        GamePrinter.setLanguage();
+        GamePrinter.printTutorial();
+        GamePrinter.grabData();
+        GamePrinter.startGame();
     }
 }

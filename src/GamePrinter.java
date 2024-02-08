@@ -20,12 +20,12 @@ public class GamePrinter {
             {"-", "-", "-", "-", "-"},
             {"7", "|", "8", "|", "9"}
     };
-    String[][] currentLayout = {
-            {" ", "|", " ", "|", " "},
-            {"-", "-", "-", "-", "-"},
-            {" ", "|", " ", "|", " "},
-            {"-", "-", "-", "-", "-"},
-            {" ", "|", " ", "|", " "}
+    static String[][] currentLayout = {
+            {},
+            {},
+            {},
+            {},
+            {}
     };
     static int inputInt;
     static int currentTurn = 1;
@@ -33,35 +33,35 @@ public class GamePrinter {
     static boolean firstTime = true;
     static boolean gameWon = false;
 
-    PlayerDataHandler player1 = new PlayerDataHandler();
-    PlayerDataHandler player2 = new PlayerDataHandler();
+    static PlayerDataHandler player1 = new PlayerDataHandler();
+    static PlayerDataHandler player2 = new PlayerDataHandler();
 
-    public void grabData(){
-        this.player1.grabPlayerName(1);
-        this.player2.grabPlayerName(2);
+    public static void grabData(){
+        player1.grabPlayerName(1);
+        player2.grabPlayerName(2);
     }
-    public void startGame() {
+    public static void startGame() {
         if (firstTime){
             System.out.print("\n");
-            System.arraycopy(layout, 0, this.currentLayout, 0, layout.length);
+            System.arraycopy(layout, 0, currentLayout, 0, layout.length);
             currentTurn = 1;
             firstTime = false ;
         }
         while(!gameWon){
-            for (int i = 0; i < this.currentLayout.length; ++i) {
-                for (int j = 0; j < this.currentLayout[i].length; ++j) {
-                    System.out.print(this.currentLayout[i][j]);
+            for (String[] strings : currentLayout) {
+                for (String string : strings) {
+                    System.out.print(string);
                 }
                 System.out.print("\n");
             }
             switch(currentTurn){
                 case 1:
                     printCorrectLanguage("round", false);
-                    System.out.print(this.player1.name + "\n");
+                    System.out.print(player1.name + "\n");
                     break;
                 case 2:
                     printCorrectLanguage("round", false);
-                    System.out.print(this.player2.name + "\n");
+                    System.out.print(player2.name + "\n");
                     break;
             }
             try{
@@ -70,63 +70,64 @@ public class GamePrinter {
                 if (inputInt > 9 || inputInt < 1){
                     printCorrectLanguage("tooManyOrTooLittleNumber", false);
                     System.out.print("\n");
-                    this.startGame();
+                    startGame();
                 }
                 inputHandler();
             }
             catch(NumberFormatException e){
                 printCorrectLanguage("incorrectKey", false);
                 System.out.print("\n");
-                this.startGame();
+                startGame();
             }
             for (int i = 0; i < 6; i += 2){
-                if ((this.currentLayout[i][0] == this.currentLayout[i][2] && this.currentLayout[i][0] == this.currentLayout[i][4]) && (this.currentLayout[i][0] != " " && this.currentLayout[i][2] != " " && this.currentLayout[i][4] != " ")) {
+                if ((Objects.equals(currentLayout[i][0], currentLayout[i][2]) && Objects.equals(currentLayout[i][0], currentLayout[i][4])) && (!Objects.equals(currentLayout[i][0], " ") && !Objects.equals(currentLayout[i][2], " ") && !Objects.equals(currentLayout[i][4], " "))) {
                     gameWon = true;
+                    break;
                 }
             }
             for (int i = 0; i < 6; i += 2){
-                if((this.currentLayout[0][i] == this.currentLayout[2][i] && this.currentLayout[0][i] == this.currentLayout[4][i]) && (this.currentLayout[0][i] != " " && this.currentLayout[2][i] != " " && this.currentLayout[4][i] != " ")){
+                if((Objects.equals(currentLayout[0][i], currentLayout[2][i]) && Objects.equals(currentLayout[0][i], currentLayout[4][i])) && (!Objects.equals(currentLayout[0][i], " ") && !Objects.equals(currentLayout[2][i], " ") && !Objects.equals(currentLayout[4][i], " "))){
                     gameWon = true;
+                    break;
                 }
             }
-            if((this.currentLayout[0][0] == this.currentLayout[2][2] && this.currentLayout[0][0] == this.currentLayout[4][4]) && (this.currentLayout[0][0] != " " && this.currentLayout[2][2] != " " && this.currentLayout[4][4] != " ")){
+            if((Objects.equals(currentLayout[0][0], currentLayout[2][2]) && Objects.equals(currentLayout[0][0], currentLayout[4][4])) && (!Objects.equals(currentLayout[0][0], " ") && !Objects.equals(currentLayout[2][2], " ") && !Objects.equals(currentLayout[4][4], " "))){
                 gameWon = true;
             }
-            if((this.currentLayout[0][4] == this.currentLayout[2][2] && this.currentLayout[0][4] == this.currentLayout[4][0]) && (this.currentLayout[0][4] != " " && this.currentLayout[2][2] != " " && this.currentLayout[4][0] != " ")){
+            if((Objects.equals(currentLayout[0][4], currentLayout[2][2]) && Objects.equals(currentLayout[0][4], currentLayout[4][0])) && (!Objects.equals(currentLayout[0][4], " ") && !Objects.equals(currentLayout[2][2], " ") && !Objects.equals(currentLayout[4][0], " "))){
                 gameWon = true;
             }
-            if(this.currentLayout[0][0] != " " && this.currentLayout[0][2] != " " && this.currentLayout[0][4] != " " && this.currentLayout[2][0] != " " && this.currentLayout[2][2] != " " && this.currentLayout[2][4] != " " && this.currentLayout[4][0] != " " && this.currentLayout[4][2] != " " && this.currentLayout[4][4] != " " && this.currentLayout[0][4] != " "){
+            if(!Objects.equals(currentLayout[0][0], " ") && !Objects.equals(currentLayout[0][2], " ") && !Objects.equals(currentLayout[0][4], " ") && !Objects.equals(currentLayout[2][0], " ") && !Objects.equals(currentLayout[2][2], " ") && !Objects.equals(currentLayout[2][4], " ") && !Objects.equals(currentLayout[4][0], " ") && !Objects.equals(currentLayout[4][2], " ") && !Objects.equals(currentLayout[4][4], " ") && !Objects.equals(currentLayout[0][4], " ")){
                 System.out.println("Remis");
                 firstTime = true ;
-                this.startGame();
+                startGame();
             }
         }
-        System.out.print("\n");
         if (currentTurn == 2){
-            System.out.print("\n" + this.player1.name);
-            this.player1.score += 1;
+            System.out.print("\n" + player1.name);
+            player1.score += 1;
         }
         else if (currentTurn == 1){
-            System.out.print("\n" + this.player2.name);
-            this.player2.score += 1;
+            System.out.print("\n" + player2.name);
+            player2.score += 1;
         }
         printCorrectLanguage("Won", true);
-        System.out.print(this.player1.name + ": " + this.player1.score + "\n" + this.player2.name + ": " + this.player2.score + "\n");
+        System.out.print(player1.name + ": " + player1.score + "\n" + player2.name + ": " + player2.score + "\n");
         gameWon = false ;
         firstTime = true ;
         printCorrectLanguage("Next", true);
         gameContinue();
     }
 
-    private void gameContinue(){
+    private static void gameContinue(){
         Scanner input = new Scanner(System.in);
         String input1 = input.nextLine();
         if (Objects.equals(input1, "T")){
-            this.startGame();
+            startGame();
         }
     }
 
-    public void inputHandler(){
+    public static void inputHandler(){
         if(currentTurn == 1){
             currentCharacter = "X";
         }
@@ -135,67 +136,67 @@ public class GamePrinter {
         }
         switch (inputInt){
             case 1:
-                if (this.currentLayout[0][0] != " "){
-                    printCorrectLanguage("Taken", false);
-                    this.startGame();
+                if (!Objects.equals(currentLayout[0][0], " ")){
+                    printCorrectLanguage("Taken", true);
+                    startGame();
                 }
-                this.currentLayout[0][0] = currentCharacter ;
+                currentLayout[0][0] = currentCharacter ;
                 break;
             case 2:
-                if (this.currentLayout[0][2] != " "){
-                    printCorrectLanguage("Taken", false);
-                    this.startGame();
+                if (!Objects.equals(currentLayout[0][2], " ")){
+                    printCorrectLanguage("Taken", true);
+                    startGame();
                 }
-                this.currentLayout[0][2] = currentCharacter ;
+                currentLayout[0][2] = currentCharacter ;
                 break;
             case 3:
-                if (this.currentLayout[0][4] != " "){
-                    printCorrectLanguage("Taken", false);
-                    this.startGame();
+                if (!Objects.equals(currentLayout[0][4], " ")){
+                    printCorrectLanguage("Taken", true);
+                    startGame();
                 }
-                this.currentLayout[0][4] = currentCharacter ;
+                currentLayout[0][4] = currentCharacter ;
                 break;
             case 4:
-                if (this.currentLayout[2][0] != " "){
-                    printCorrectLanguage("Taken", false);
-                    this.startGame();
+                if (!Objects.equals(currentLayout[2][0], " ")){
+                    printCorrectLanguage("Taken", true);
+                    startGame();
                 }
-                this.currentLayout[2][0] = currentCharacter ;
+                currentLayout[2][0] = currentCharacter ;
                 break;
             case 5:
-                if (this.currentLayout[2][2] != " "){
-                    printCorrectLanguage("Taken", false);
-                    this.startGame();
+                if (!Objects.equals(currentLayout[2][2], " ")){
+                    printCorrectLanguage("Taken", true);
+                    startGame();
                 }
-                this.currentLayout[2][2] = currentCharacter ;
+                currentLayout[2][2] = currentCharacter ;
                 break;
             case 6:
-                if (this.currentLayout[2][4] != " "){
-                    printCorrectLanguage("Taken", false);
-                    this.startGame();
+                if (!Objects.equals(currentLayout[2][4], " ")){
+                    printCorrectLanguage("Taken", true);
+                    startGame();
                 }
-                this.currentLayout[2][4] = currentCharacter ;
+                currentLayout[2][4] = currentCharacter ;
                 break;
             case 7:
-                if (this.currentLayout[4][0] != " "){
-                    printCorrectLanguage("Taken", false);
-                    this.startGame();
+                if (!Objects.equals(currentLayout[4][0], " ")){
+                    printCorrectLanguage("Taken", true);
+                    startGame();
                 }
-                this.currentLayout[4][0] = currentCharacter ;
+                currentLayout[4][0] = currentCharacter ;
                 break;
             case 8:
-                if (this.currentLayout[4][2] != " "){
-                    printCorrectLanguage("Taken", false);
-                    this.startGame();
+                if (!Objects.equals(currentLayout[4][2], " ")){
+                    printCorrectLanguage("Taken", true);
+                    startGame();
                 }
-                this.currentLayout[4][2] = currentCharacter ;
+                currentLayout[4][2] = currentCharacter ;
                 break;
             case 9:
-                if (this.currentLayout[4][4] != " "){
-                    printCorrectLanguage("Taken", false);
-                    this.startGame();
+                if (!Objects.equals(currentLayout[4][4], " ")){
+                    printCorrectLanguage("Taken", true);
+                    startGame();
                 }
-                this.currentLayout[4][4] = currentCharacter ;
+                currentLayout[4][4] = currentCharacter ;
                 break;
         }
         if (currentTurn == 1){
@@ -206,7 +207,7 @@ public class GamePrinter {
         }
     }
 
-    public void setLanguage() {
+    public static void setLanguage() {
         System.out.println("Choose your language/Wybierz swój język:\n1. Polish/Polski\n2. English/Angielski");
         try{
             Scanner input = new Scanner(System.in);
@@ -221,16 +222,16 @@ public class GamePrinter {
             }
             else{
                 System.out.println("Invalid character\n");
-                this.setLanguage();
+                setLanguage();
             }
         }
         catch(NumberFormatException e){
             System.out.println("Invalid character\n");
-            this.setLanguage();
+            setLanguage();
         }
     }
 
-    public void printTutorial() {
+    public static void printTutorial() {
         printCorrectLanguage("tutorialOne", true);
         for (int i = 0; i < GamePrinter.layout.length; ++i) {
             for (int j = 0; j < GamePrinter.layout[i].length; ++j) {
