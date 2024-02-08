@@ -1,1 +1,1 @@
-Do you want to play again? Press T to continue, any other key will exit the program .Confirm with enter button.
+Do you want to play again? Press T to continue, any other key will exit the program. Confirm with enter button.
