@@ -3,6 +3,8 @@ import java.io.FileNotFoundException;
 import java.util.Objects;
 import java.util.Scanner;
 
+import static java.lang.System.exit;
+
 
 public class GamePrinter {
     static String language;
@@ -122,8 +124,11 @@ public class GamePrinter {
     private static void gameContinue(){
         Scanner input = new Scanner(System.in);
         String input1 = input.nextLine();
-        if (Objects.equals(input1, "T")){
+        if (input1.equals("T")){
             startGame();
+        }
+        else{
+            exit(0);
         }
     }
 
