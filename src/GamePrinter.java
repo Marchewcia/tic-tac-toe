@@ -256,7 +256,7 @@ public class GamePrinter {
     public static void printCorrectLanguage(String name, boolean line) {
         try {
             String path = System.getProperty("user.dir");
-            File file = new File(path + "\\src\\txt\\" + name + "_" + GamePrinter.language + ".txt");
+            File file = new File(path + "\\src\\txt\\" + name + "_" + GamePrinter.language + ".txt"); //dla skompilowanego: File(path + "\\txt\\" + name + "_" + GamePrinter.language + ".txt");
             Scanner reading = new Scanner(file);
             while (reading.hasNextLine()) {
                 System.out.print(reading.nextLine());
