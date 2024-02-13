@@ -2,13 +2,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Objects;
 import java.util.Scanner;
-
 import static java.lang.System.exit;
 
 
 public class GamePrinter {
     static String language;
-    final static String[][] layout = {
+    static String[][] currentLayout = {
             {" ", "|", " ", "|", " "},
             {"-", "-", "-", "-", "-"},
             {" ", "|", " ", "|", " "},
@@ -22,19 +21,12 @@ public class GamePrinter {
             {"-", "-", "-", "-", "-"},
             {"7", "|", "8", "|", "9"}
     };
-    static String[][] currentLayout = {
-            {},
-            {},
-            {},
-            {},
-            {}
-    };
+
     static int inputInt;
     static int currentTurn = 1;
     static String currentCharacter = "X";
     static boolean firstTime = true;
     static boolean gameWon = false;
-
     static PlayerDataHandler player1 = new PlayerDataHandler();
     static PlayerDataHandler player2 = new PlayerDataHandler();
 
@@ -44,8 +36,13 @@ public class GamePrinter {
     }
     public static void startGame() {
         if (firstTime){
-            System.out.print("\n");
-            System.arraycopy(layout, 0, currentLayout, 0, layout.length);
+            System.out.print("\n przed");
+            for (int i = 0; i < currentLayout.length; i += 2) {
+                for (int j = 0; j < currentLayout[i].length; j += 2) {
+                    currentLayout[i][j] = " ";
+                }
+            }
+            System.out.print("po");
             currentTurn = 1;
             firstTime = false ;
         }
@@ -116,7 +113,6 @@ public class GamePrinter {
         printCorrectLanguage("Won", true);
         System.out.print(player1.name + ": " + player1.score + "\n" + player2.name + ": " + player2.score + "\n");
         gameWon = false ;
-        firstTime = true ;
         printCorrectLanguage("Next", true);
         gameContinue();
     }
@@ -125,6 +121,7 @@ public class GamePrinter {
         Scanner input = new Scanner(System.in);
         String input1 = input.nextLine();
         if (input1.equals("T")){
+            firstTime = true ;
             startGame();
         }
         else{
@@ -238,9 +235,9 @@ public class GamePrinter {
 
     public static void printTutorial() {
         printCorrectLanguage("tutorialOne", true);
-        for (int i = 0; i < GamePrinter.layout.length; ++i) {
-            for (int j = 0; j < GamePrinter.layout[i].length; ++j) {
-                System.out.print(GamePrinter.layout[i][j]);
+        for (String[] strings : currentLayout) {
+            for (String string : strings) {
+                System.out.print(string);
             }
             System.out.print("\n");
         }
