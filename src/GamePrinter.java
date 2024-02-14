@@ -36,13 +36,12 @@ public class GamePrinter {
     }
     public static void startGame() {
         if (firstTime){
-            System.out.print("\n przed");
+            System.out.print("\n");
             for (int i = 0; i < currentLayout.length; i += 2) {
                 for (int j = 0; j < currentLayout[i].length; j += 2) {
                     currentLayout[i][j] = " ";
                 }
             }
-            System.out.print("po");
             currentTurn = 1;
             firstTime = false ;
         }
